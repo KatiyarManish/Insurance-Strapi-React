@@ -1,5 +1,11 @@
+import Register from "./Register";
+
 const Landing = () => {
-  return <div>Landing</div>;
+  return (
+    <div>
+      <Register />
+    </div>
+  );
 };
 
 export default Landing;
