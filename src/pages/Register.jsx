@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 const Register = () => {
-  const { register, handleSubmit, formState } = useForm();
+  const { register, handleSubmit, formState, getValues } = useForm();
 
   const { errors } = formState;
 
@@ -99,9 +99,27 @@ const Register = () => {
                 {errors.password.message}
               </p>
             )}
-            <p className="text-gray-600 text-xs mt-1">
-              Must contain 1 uppercase letter, 1 number, min. 8 characters.
-            </p>
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-semibold mb-2">
+              Confirm Password *
+            </label>
+            <input
+              type="password"
+              id="confirmpassword"
+              className="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
+              placeholder="••••••••"
+              {...register("confirmpassword", {
+                required: "This field is required",
+                validate: (value) =>
+                  value === getValues().password || "Password should ne same",
+              })}
+            />
+            {errors?.confirmpassword?.message && (
+              <p className="p-1 mb-1 text-sm text-red-800 rounded-lg dark:bg-gray-800 dark:text-red-400">
+                {errors.confirmpassword.message}
+              </p>
+            )}
           </div>
           <button
             type="submit"
