@@ -76,4 +76,10 @@ export default App;
           alert("The email address and password are " + email + " and " + password + " respectively.");
         };
 
-- validation through react-hook-form
+- validation through react-hook-form done
+
+- used fetch to register a user and get back it's JWT..Strapi returns JWT
+
+- create redux store and store login status and token
+- redirect to dashbaord using useHistory hook
+- handle login and logout functionality via state
