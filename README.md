@@ -81,5 +81,15 @@ export default App;
 - used fetch to register a user and get back it's JWT..Strapi returns JWT
 
 - create redux store and store login status and token
-- redirect to dashbaord using useHistory hook
+- redirect to dashbaord using useNavigate hook
 - handle login and logout functionality via state
+- after regsiter. state is persisted so after page refresh, user will be logged in
+
+\*\*
+login functionality
+user can't move to other login and logout route if logged in
+gmail auth build
+user already exist error - register
+invalid credentails - login
+
+\*\*

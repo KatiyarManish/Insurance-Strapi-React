@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { login, loading, selectLoading } from "../utils/authSlice";
+import { registeruser, loading, selectLoading } from "../utils/authSlice";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 
@@ -9,7 +9,7 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loading2 = useSelector(selectLoading);
-  const { register, handleSubmit, formState, getValues } = useForm();
+  const { register, handleSubmit, formState, getValues, setError } = useForm();
   const { errors } = formState;
 
   const handleRegister = async (data) => {
@@ -28,11 +28,10 @@ const Register = () => {
           password: password,
         }),
       });
-
+      console.log(res);
       if (res.ok) {
-        const { jwt } = await res.json();
-        dispatch(login(jwt));
-
+        const { user, jwt } = await res.json();
+        dispatch(registeruser({ user, jwt }));
         navigate("/dashboard");
       }
     } catch (error) {
@@ -171,6 +170,11 @@ const Register = () => {
               >
                 Register
               </button>
+              {errors.apiError && (
+                <div className="alert alert-danger mt-3 mb-0">
+                  {errors.apiError?.message}
+                </div>
+              )}
               <p className="text-gray-600 text-xs text-center mt-4">
                 By clicking Register, you agree to accept Insu@tech
                 <a href="#" className="text-blue-500 hover:underline ml-1">

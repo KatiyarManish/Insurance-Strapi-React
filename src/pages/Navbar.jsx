@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   FaRegWindowClose,
   FaSearch,
@@ -9,11 +10,20 @@ import {
   FaHandHoldingMedical,
 } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
+import { logout } from "../utils/authSlice";
+import { useDispatch } from "react-redux";
 
 const Navbar = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
   const handleToggle = () => {
     setOpenSidebar(!openSidebar);
+  };
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
   };
 
   return (
@@ -84,9 +94,11 @@ const Navbar = () => {
         )}
         <div className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
           <IoMdLogOut />
-          <span className="text-[15px] ml-4 text-gray-200 font-bold">
-            <Link to="/login">Logout</Link>
-          </span>
+          <button onClick={handleLogout}>
+            <span className="text-[15px] ml-4 text-gray-200 font-bold">
+              <Link to="/login">Logout</Link>
+            </span>
+          </button>
         </div>
       </div>
     </>
