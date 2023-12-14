@@ -84,12 +84,9 @@ export default App;
 - redirect to dashbaord using useNavigate hook
 - handle login and logout functionality via state
 - after regsiter. state is persisted so after page refresh, user will be logged in
+- user can't move to other login and logout route if logged in - handled through useEffect
+- login functionality done
+- user already exist error - register
+- invalid credentails - login
 
-\*\*
-login functionality
-user can't move to other login and logout route if logged in
 gmail auth build
-user already exist error - register
-invalid credentails - login
-
-\*\*

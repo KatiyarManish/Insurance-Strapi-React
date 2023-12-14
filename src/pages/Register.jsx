@@ -1,14 +1,23 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { registeruser, loading, selectLoading } from "../utils/authSlice";
+import {
+  registeruser,
+  loading,
+  selectLoading,
+  selectIsAuthenticated,
+  loadingoff,
+} from "../utils/authSlice";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import { useEffect, useState } from "react";
 
 const Register = () => {
+  const [apiError, setapiError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loading2 = useSelector(selectLoading);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const { register, handleSubmit, formState, getValues, setError } = useForm();
   const { errors } = formState;
 
@@ -17,27 +26,43 @@ const Register = () => {
 
     try {
       dispatch(loading());
-      const res = await fetch("http://localhost:1337/api/auth/local/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: fullName,
-          email: email,
-          password: password,
-        }),
-      });
-      console.log(res);
-      if (res.ok) {
-        const { user, jwt } = await res.json();
+      const response = await fetch(
+        "http://localhost:1337/api/auth/local/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: fullName,
+            email: email,
+            password: password,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const { user, jwt } = await response.json();
         dispatch(registeruser({ user, jwt }));
         navigate("/dashboard");
+      }
+      if (!response.ok) {
+        const registerError = await response.json();
+
+        dispatch(loadingoff());
+        setapiError(registerError.error.message);
+        setTimeout(() => {
+          setapiError("");
+        }, 3000);
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/dashboard");
+  }, [isAuthenticated]);
 
   const onError = (errors) => {
     console.log(errors);
@@ -160,6 +185,12 @@ const Register = () => {
                 {errors?.confirmpassword?.message && (
                   <p className="p-1 mb-1 text-sm text-red-800 rounded-lg dark:bg-gray-800 dark:text-red-400">
                     {errors.confirmpassword.message}
+                  </p>
+                )}
+
+                {apiError && (
+                  <p className="p-1 mb-1 text-sm text-red-800 rounded-lg dark:bg-gray-800 dark:text-red-400">
+                    {apiError}
                   </p>
                 )}
               </div>

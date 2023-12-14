@@ -42,6 +42,7 @@ const authSlice = createSlice({
       state.Isloading = false;
       saveState(state);
     },
+
     logout: (state) => {
       state.isAuthenticated = false;
       state.user = null;
@@ -51,10 +52,14 @@ const authSlice = createSlice({
     loading: (state) => {
       state.Isloading = true;
     },
+
+    loadingoff: (state) => {
+      state.Isloading = false;
+    },
   },
 });
 
-export const { registeruser, logout, loading } = authSlice.actions;
+export const { registeruser, logout, loading, loadingoff } = authSlice.actions;
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
 export const selectJwt = (state) => state.auth.jwt;
 export const selectLoading = (state) => state.auth.Isloading;
